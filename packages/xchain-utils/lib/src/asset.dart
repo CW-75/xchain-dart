@@ -27,7 +27,6 @@ AssetType getTypeFromDelimiter(String assetStr) {
 }
 
 List<String> splitAssetStringByType(String assetStr, AssetType type) {
-  print(assetStr);
   switch (type) {
     case AssetType.native:
     case AssetType.token:
