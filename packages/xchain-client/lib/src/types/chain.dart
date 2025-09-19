@@ -1,0 +1,1 @@
+typedef Chain = String;
