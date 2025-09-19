@@ -39,8 +39,7 @@ void main() {
   group('Amount utils functions', () {
     test('Convert Base to Asset', () {
       BaseAmount baseAmount =
-          BaseAmount('10000000000000000', 18); // 1 ETH in wei
-
+          BaseAmount('10_000_000_000_000_000', 18); // 0.01 ETH in wei
       AssetAmount assetAmount = baseToAsset(baseAmount);
       print(assetAmount.toString());
       expect(assetAmount.toString(), '0.01');
