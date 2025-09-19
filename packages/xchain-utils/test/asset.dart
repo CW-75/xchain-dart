@@ -82,5 +82,17 @@ void main() {
       String assetStr = assetToString(testSecuredAsset);
       expect(assetStr, 'ETH-USDT-0x1234567890abcdef');
     });
+
+    test('Compare two equals assets', () {
+      Asset asset1 = assetFromString('ETH.ETH');
+      Asset asset2 = assetFromString('ETH.ETH');
+      expect(eqAsset(asset1, asset2), isTrue);
+    });
+
+    test('Compare two different assets', () {
+      Asset asset1 = assetFromString('ETH.ETH');
+      Asset asset2 = assetFromString('BTC.BTC');
+      expect(eqAsset(asset1, asset2), false);
+    });
   });
 }

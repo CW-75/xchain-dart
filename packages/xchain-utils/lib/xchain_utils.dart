@@ -3,9 +3,7 @@
 /// More dartdocs go here.
 library;
 
-export 'src/asset.dart';
-export 'src/amount.dart'
-    hide Amount
-    show thorDecimal, BaseAmount, AssetAmount, assetToBase, baseToAsset;
+export 'src/asset.dart' hide splitAssetStringByType, getTypeFromDelimiter;
+export 'src/amount.dart' hide Amount;
 
 // TODO: Export any libraries intended for clients of this package.

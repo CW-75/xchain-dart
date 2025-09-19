@@ -44,6 +44,7 @@ List<String> splitAssetStringByType(String assetStr, AssetType type) {
   }
 }
 
+/// Parses an asset string into an Asset object based on its type.|
 Asset assetFromString(String assetStr) {
   final type = getTypeFromDelimiter(assetStr);
   final [chain, symbol] = splitAssetStringByType(assetStr, type);
@@ -56,6 +57,7 @@ Asset assetFromString(String assetStr) {
   );
 }
 
+/// Converts an Asset to a string representation based on its type.
 String assetToString(Asset asset) {
   switch (asset.type) {
     case AssetType.synth:
@@ -68,3 +70,10 @@ String assetToString(Asset asset) {
       return '${asset.chain}.${asset.symbol}';
   }
 }
+
+/// Compares two assets for equality based on their properties.
+bool eqAsset(Asset a, Asset b) =>
+    a.symbol == b.symbol &&
+    a.ticker == b.ticker &&
+    a.chain == b.chain &&
+    a.type == b.type;
