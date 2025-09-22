@@ -41,7 +41,6 @@ void main() {
       BaseAmount baseAmount =
           BaseAmount('10_000_000_000_000_000', 18); // 0.01 ETH in wei
       AssetAmount assetAmount = baseToAsset(baseAmount);
-      print(assetAmount.toString());
       expect(assetAmount.toString(), '0.01');
       expect(assetAmount.decimal, 18);
     });
