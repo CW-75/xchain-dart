@@ -4,3 +4,4 @@ environment:
 workspace:
   - packages/xchain-utils
   - packages/xchain-crypto
+  - packages/xchain-client
