@@ -21,3 +21,5 @@ typedef FeeBounds = (
   int lower,
   int upper,
 );
+
+typedef FeeEstimateOption = ({String? memo, String? sender});
