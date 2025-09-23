@@ -1,5 +1,3 @@
-import 'dart:collection';
-
 import 'package:xchain_utils/xchain_utils.dart';
 
 enum FeeOption {
@@ -13,9 +11,11 @@ enum FeeType {
   perByte,
 }
 
+typedef FeeRate = int;
 typedef Fee = BaseAmount;
 
 typedef Fees = ({Map<FeeOption, Fee> options, FeeType type});
+typedef FeesWithRates = ({Map<FeeOption, FeeRate> rates, Fees fees});
 
 typedef FeeBounds = (
   int lower,

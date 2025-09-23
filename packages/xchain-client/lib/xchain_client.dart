@@ -3,6 +3,4 @@
 /// More dartdocs go here.
 library;
 
-export 'src/client.dart';
-export 'src/asset.dart';
-export 'src/network.dart';
+export 'src/types/xchain_client_types.dart';
