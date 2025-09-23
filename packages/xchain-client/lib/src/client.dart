@@ -1,4 +1,4 @@
-import 'package:xchain_client/src/network.dart';
+import 'package:xchain_client/xchain_client.dart';
 
 abstract interface class XchainClient {
   void setNetwork(Network network);
