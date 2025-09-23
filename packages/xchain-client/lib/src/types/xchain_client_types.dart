@@ -2,6 +2,8 @@ export 'address.dart';
 export 'asset.dart';
 export 'balances.dart';
 export 'chain.dart';
+export 'client.dart';
 export 'fees.dart';
 export 'network.dart';
+export 'root_derivation.dart';
 export 'tx.dart';
