@@ -1,7 +1,9 @@
 import 'package:xchain_client/xchain_client.dart';
 import 'package:xchain_utils/xchain_utils.dart';
 
-abstract interface class XchainClient {
+const infinty = 9223372036854775807;
+
+abstract interface class _XchainClient {
   void setNetwork(Network network);
   Network getNetwork();
   String getExplorerUrl();
@@ -25,11 +27,12 @@ abstract interface class XchainClient {
   void purgeClient();
 }
 
-abstract class BaseClient implements XchainClient {
-  Network _network = Network.mainnet;
+abstract class BaseClient implements _XchainClient {
+  Network _network;
   FeeBounds _feeBounds;
-  String _chain;
-  String _phrase;
+  final String _chain;
+
+  String? _phrase;
   final RootDerivationPaths? _derivationPaths;
 
   @override
@@ -39,8 +42,18 @@ abstract class BaseClient implements XchainClient {
   Network getNetwork() => _network;
 
   String getDerivationPath() =>
-      _derivationPaths != null ? '${_derivationPaths?[_network]}' : '';
+      _derivationPaths != null ? '${_derivationPaths[_network]}' : '';
 
-  BaseClient(this._chain, this._network, this._feeBounds, this._phrase,
-      this._derivationPaths);
+  BaseClient(this._chain,
+      [this._network = Network.mainnet,
+      this._phrase,
+      this._derivationPaths,
+      this._feeBounds = (
+        lower: 1,
+        upper: infinty,
+      )]) {
+    if (_phrase == null || _phrase!.isEmpty) {
+      throw ArgumentError('Phrase cannot be null or empty');
+    }
+  }
 }
