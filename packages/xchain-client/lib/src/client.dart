@@ -30,6 +30,7 @@ abstract class BaseClient implements XchainClient {
   FeeBounds _feeBounds;
   String _chain;
   String _phrase;
+  final RootDerivationPaths? _derivationPaths;
 
   @override
   void setNetwork(Network network) => _network = network;
@@ -37,5 +38,9 @@ abstract class BaseClient implements XchainClient {
   @override
   Network getNetwork() => _network;
 
-  BaseClient(this._chain, this._network, this._feeBounds, this._phrase);
+  String getDerivationPath() =>
+      _derivationPaths != null ? '${_derivationPaths?[_network]}' : '';
+
+  BaseClient(this._chain, this._network, this._feeBounds, this._phrase,
+      this._derivationPaths);
 }

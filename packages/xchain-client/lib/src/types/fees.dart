@@ -17,9 +17,9 @@ typedef Fee = BaseAmount;
 typedef Fees = ({Map<FeeOption, Fee> options, FeeType type});
 typedef FeesWithRates = ({Map<FeeOption, FeeRate> rates, Fees fees});
 
-typedef FeeBounds = (
+typedef FeeBounds = ({
   int lower,
   int upper,
-);
+});
 
 typedef FeeEstimateOption = ({String? memo, String? sender});
