@@ -1,0 +1,6 @@
+name: xchain_dart
+environment:
+  sdk: ^3.5.4
+workspace:
+  - packages/xchain-utils
+
