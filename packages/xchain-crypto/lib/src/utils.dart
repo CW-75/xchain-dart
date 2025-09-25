@@ -21,7 +21,7 @@ Future<Uint8List> pbkdf2Async(
   final passwordBytes = utf8.encode(passphrase);
   var dk = Uint8List(keyLen);
   var block = Uint8List(salt.length + 4);
-  var hmac = Hmac(digestOpts[digest]!, passwordBytes);
+  final Hmac hmac = Hmac(digestOpts[digest]!, passwordBytes);
   var l = keyLen / digestSizes[digest]!; // Number of blocks
   var pos = 0;
   block.setAll(0, salt);
