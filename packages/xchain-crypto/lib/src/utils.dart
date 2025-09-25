@@ -17,7 +17,7 @@ Future<Uint8List> pbkdf2Async(
 ) async {
   assert(iterations > 0, 'Iterations must be greater than 0');
   assert(keyLen > 0, 'Key length must be greater than 0');
-  assert(keyLen > math.pow(2, 32) - 1, 'derived key too long');
+  assert(keyLen < math.pow(2, 32) - 1, 'derived key too long');
   final passwordBytes = utf8.encode(passphrase);
   var dk = Uint8List(keyLen);
   var block = Uint8List(salt.length + 4);
@@ -35,7 +35,6 @@ Future<Uint8List> pbkdf2Async(
     // XOR with previous result if not the first block
     for (var j = 1; j < iterations; j++) {
       U = hmac.convert(U).bytes;
-
       for (var k = 0; k < digestSizes[digest]!; k++) {
         T[k] ^= U[k];
       }
