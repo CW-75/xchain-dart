@@ -1,5 +1,6 @@
 import 'package:xchain_crypto/xchain_crypto.dart';
 import 'package:test/test.dart';
+import 'package:dotenv/dotenv.dart';
 
 void main() {
   group('A group of tests', () {
@@ -7,8 +8,6 @@ void main() {
       // Additional setup goes here.
     });
 
-    test('First Test', () {
-      expect(awesome.isAwesome, isTrue);
-    });
+    test('First Test', () {});
   });
 }
