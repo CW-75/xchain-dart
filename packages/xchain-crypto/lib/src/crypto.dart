@@ -6,6 +6,7 @@ import 'package:xchain_crypto/src/extension.dart';
 import 'package:xchain_crypto/src/keystore.dart';
 import 'package:xchain_crypto/src/random.dart';
 import 'package:xchain_crypto/src/const.dart';
+import 'package:xchain_crypto/src/types/buf.dart';
 import 'package:xchain_crypto/src/types/crypto.dart';
 import 'package:xchain_crypto/src/utils.dart';
 
@@ -29,18 +30,26 @@ String phraseToEntropy(String phrase) {
   return mnemonicToEntropy(phrase);
 }
 
-Future<Uint8List> encrypt(CipherAlgorithm cipherAlgorithm, String message,
-    Uint8List key, Uint8List iv) async {
+Future<Buffer> encrypt(CipherAlgorithm cipherAlgorithm, String message,
+    Buffer key, Buffer iv) async {
   // This is a placeholder for the actual cipher creation logic.
   // In a real implementation, you would return an instance of a cipher.
-  Cipher cipher = AesCtr.with128bits(macAlgorithm: MacAlgorithm.empty);
+  Cipher cipher;
+  switch (cipherAlgorithm) {
+    case CipherAlgorithm.aes128ctr:
+      cipher = AesCtr.with128bits(macAlgorithm: MacAlgorithm.empty);
+      break;
+    case CipherAlgorithm.aes256ctr:
+      cipher = AesCtr.with256bits(macAlgorithm: MacAlgorithm.empty);
+      break;
+  }
   final cr = await cipher.encrypt(
     Uint8List.fromList(
         message.codeUnits), // Placeholder for the actual data to encrypt
-    secretKey: SecretKey(key),
-    nonce: iv, // Nonce is used as IV in CTR mode
+    secretKey: SecretKey(key.buffer),
+    nonce: iv.buffer, // Nonce is used as IV in CTR mode
   );
-  return Uint8List.fromList(cr.cipherText);
+  return Buffer.from(cr.cipherText);
 }
 
 Future<Keystore> encryptToKeystore(String phrase, String password) async {
@@ -53,10 +62,11 @@ Future<Keystore> encryptToKeystore(String phrase, String password) async {
   final KdfParams kdfParams = (
     prf: prf,
     dklen: dklen,
-    salt: salt.toString(),
+    salt: salt.toStringHex(),
     c: c,
   );
-  final CipherParams cipherParams = (iv: iv.toString());
+  print('Salt: ${salt.toStringHex()}');
+  final CipherParams cipherParams = (iv: iv.toStringHex());
   final dk = await pbkdf2Async(
     password,
     salt,
@@ -64,11 +74,13 @@ Future<Keystore> encryptToKeystore(String phrase, String password) async {
     dklen,
     DigestAlgorithm.sha256,
   );
+  print('Derived key: ${dk.toStringHex()}');
   final cipherText = await encrypt(
       CipherAlgorithm.aes128ctr, phrase, dk.sublist(0, 16), iv.sublist(0, 16));
   final mac = await Blake2b(hashLengthInBytes: 32)
       .hash(dk.sublist(16, 32) + cipherText);
 
+  print('Ciphertext: ${cipherText.toStringHex()}');
   final KeystoreCryptoField kCrypto = (
     cipher: cipher,
     ciphertext: cipherText.toStringHex(),
@@ -86,8 +98,33 @@ Future<Keystore> encryptToKeystore(String phrase, String password) async {
     version: 1, // Version of the keystore format
     meta: meta, // Metadata for the keystore
   );
-
-  print(keystore.toJson());
-
   return keystore;
+}
+
+Future<String> decryptFromKeystore(Keystore keystore, String password) async {
+  final kdfParams = keystore.crypto.kdfparams;
+
+  final salt = Buffer.fromHex(kdfParams.salt);
+  print('Extracted salt: ${salt.toStringHex()}');
+  // print(keystore.crypto.cipherparams.iv.toString());
+
+  final iv = Buffer.fromHex(keystore.crypto.cipherparams.iv);
+  final dk = await pbkdf2Async(
+    password,
+    salt,
+    kdfParams.c,
+    kdfParams.dklen,
+    DigestAlgorithm.sha256,
+  );
+  print('Extracted Derived key: ${dk.toStringHex()}');
+  final cipherText = Buffer.fromHex(keystore.crypto.ciphertext);
+  print('Extracted ciphertext: ${cipherText.toStringHex()}');
+  final clearCyphertext = await encrypt(
+      CipherAlgorithm.aes128ctr,
+      String.fromCharCodes(cipherText.buffer),
+      dk.sublist(0, 16),
+      iv.sublist(0, 16));
+
+  return String.fromCharCodes(
+      clearCyphertext.buffer); // Convert to string for simplicity
 }

@@ -5,12 +5,14 @@ import 'package:crypto/crypto.dart';
 import 'package:xchain_crypto/src/const.dart';
 import 'dart:math' as math;
 
+import 'package:xchain_crypto/src/types/buf.dart';
+
 ///
 /// Function based on https://datatracker.ietf.org/doc/html/rfc2898#section-5.2
 ///
-Future<Uint8List> pbkdf2Async(
+Future<Buffer> pbkdf2Async(
   String passphrase,
-  Uint8List salt,
+  Buffer salt,
   int iterations,
   int keyLen,
   DigestAlgorithm digest,
@@ -24,7 +26,7 @@ Future<Uint8List> pbkdf2Async(
   final Hmac hmac = Hmac(digestOpts[digest]!, passwordBytes);
   var l = keyLen / digestSizes[digest]!; // Number of blocks
   var pos = 0;
-  block.setAll(0, salt);
+  block.setAll(0, salt.buffer);
   var dkres = keyLen;
 
   for (var i = 1; i <= l.ceil(); i++) {
@@ -48,5 +50,5 @@ Future<Uint8List> pbkdf2Async(
     pos += digestSizes[digest]!;
     dkres -= digestSizes[digest]!;
   }
-  return Uint8List.fromList(dk);
+  return Buffer.from(dk);
 }

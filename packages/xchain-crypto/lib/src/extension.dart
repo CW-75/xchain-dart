@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 // Extends Uint8List to provide additional utility methods.
+
 extension Uint8ListExtension on Uint8List {
   /// Converts the Uint8List to a hex string.
   ///
@@ -21,5 +22,15 @@ extension Uint8ListExtension on Uint8List {
   /// ```
   List<String> toBufString() {
     return map((byte) => byte.toRadixString(16).padLeft(2, '0')).toList();
+  }
+
+  Uint8List fromHexString(String hex) {
+    if (hex.length % 2 != 0) {
+      throw ArgumentError('Hex string must have an even length');
+    }
+    return Uint8List.fromList(
+      List.generate(hex.length ~/ 2,
+          (i) => int.parse(hex.substring(i * 2, i * 2 + 2), radix: 16)),
+    );
   }
 }

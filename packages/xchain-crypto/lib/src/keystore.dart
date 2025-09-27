@@ -41,7 +41,7 @@ class Keystore {
   }
 
   // Converts the Keystore to a Map object
-  toObject() {
+  Map<String, Object> toObject() {
     final cryptoFieldMap = {
       'cipher': crypto.cipher,
       'ciphertext': crypto.ciphertext,
