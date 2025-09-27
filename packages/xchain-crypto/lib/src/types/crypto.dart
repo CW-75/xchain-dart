@@ -17,10 +17,3 @@ typedef KeystoreCryptoField = ({
   KdfParams kdfparams,
   String mac,
 });
-
-typedef Keystore = ({
-  KeystoreCryptoField crypto,
-  String id,
-  String version,
-  String meta
-});
