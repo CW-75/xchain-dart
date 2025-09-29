@@ -3,5 +3,5 @@ environment:
   sdk: ^3.5.4
 workspace:
   - packages/xchain-utils
-  - packages/xchain-crypto
   - packages/xchain-client
+  - packages/xchain-crypto
