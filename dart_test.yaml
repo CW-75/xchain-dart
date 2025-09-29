@@ -1,2 +1,4 @@
 paths:
   - ./packages/xchain-utils
+  - ./packages/xchain-client
+  - ./packages/xchain-crypto

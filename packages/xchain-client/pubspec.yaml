@@ -1,0 +1,23 @@
+name: xchain_client
+description: A starting point for Dart libraries or applications.
+version: 1.0.0
+publish_to: none
+# repository: https://github.com/my_org/my_repo
+
+environment:
+  sdk: ^3.5.4
+
+# Add regular dependencies here.
+dependencies:
+  xchain_utils:
+    path: ../xchain-utils
+  xchain_crypto:
+    path: ../xchain-crypto
+  http: ^1.5.0
+  # path: ^1.8.0
+
+resolution: workspace
+dev_dependencies:
+  dotenv: ^4.2.0
+  lints: ^4.0.0
+  test: ^1.24.0
