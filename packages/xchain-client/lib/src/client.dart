@@ -33,7 +33,6 @@ abstract interface class _XchainClient {
 
 abstract base class BaseClient implements _XchainClient {
   Network _network;
-  FeeBounds _feeBounds;
   final String _chain;
 
   String? _phrase;
@@ -60,8 +59,7 @@ abstract base class BaseClient implements _XchainClient {
       : _chain = chain,
         _network = params?.network ?? Network.testnet,
         _phrase = params?.phrase,
-        _derivationPaths = params?.rootDerivationPaths,
-        _feeBounds = params?.feeBounds ?? (lower: 1, upper: infinty) {
+        _derivationPaths = params?.rootDerivationPaths {
     if (_phrase == null || _phrase!.isEmpty) {
       throw ArgumentError('Phrase cannot be null or empty');
     }
