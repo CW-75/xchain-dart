@@ -70,7 +70,7 @@ abstract base class BaseClient implements _XchainClient {
     }
   }
 
-  Future<FeeRateWithUnit> _getFeeRate() async {
+  Future<FeeRateWithUnit> getFeeRate() async {
     var feeRate = await _getFeeRateFromThorchain();
     return feeRate;
   }
