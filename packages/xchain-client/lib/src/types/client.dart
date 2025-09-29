@@ -6,3 +6,5 @@ typedef XchainClientParams = ({
   FeeBounds? feeBounds,
   RootDerivationPaths? rootDerivationPaths,
 });
+
+typedef ThornodeApiMap = Map<Network, String>;

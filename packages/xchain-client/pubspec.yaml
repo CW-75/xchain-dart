@@ -11,6 +11,9 @@ environment:
 dependencies:
   xchain_utils:
     path: ../xchain-utils
+  xchain_crypto:
+    path: ../xchain-crypto
+  http: ^1.5.0
   # path: ^1.8.0
 
 resolution: workspace

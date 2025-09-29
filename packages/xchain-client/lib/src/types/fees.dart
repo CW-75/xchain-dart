@@ -11,7 +11,9 @@ enum FeeType {
   perByte,
 }
 
-typedef FeeRate = int;
+typedef FeeRate = double;
+typedef FeeRateUnit = String;
+typedef FeeRateWithUnit = ({FeeRate rate, FeeRateUnit unit});
 typedef Fee = BaseAmount;
 
 typedef Fees = ({Map<FeeOption, Fee> options, FeeType type});
