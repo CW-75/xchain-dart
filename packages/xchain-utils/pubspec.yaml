@@ -2,7 +2,7 @@ name: xchain_utils
 description: A starting point for Dart libraries or applications.
 version: 1.0.0
 repository: https://github.com/CW-75/xchain-dart.git
-
+publish_to: none
 environment:
   sdk: ^3.5.4
 
@@ -10,6 +10,11 @@ environment:
 # dependencies:
 # path: ^1.8.0
 
+dependencies: 
+  bignumbers: 
+    git:
+      url: "https://github.com/CW-75/bignumbers_dart.git"
+      ref: "main"
 resolution: workspace
 
 dev_dependencies:

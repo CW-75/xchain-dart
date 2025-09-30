@@ -1,24 +1,24 @@
+import 'package:bignumbers/bignumbers.dart';
+
 const thorDecimal = 8;
 
 enum Denomination { base, asset }
 
-final class Amount {
-  String _value;
+final class Amount<T> {
+  late Bignumber _value;
   final int? _decimal;
   final Denomination _denomination;
 
-  get decimal => _decimal ?? thorDecimal;
+  int get decimal => _decimal ?? thorDecimal;
 
   /// Creates an [Amount] with the specified [_denomination], [_value], and [_decimal].
   Amount(
     this._denomination,
-    this._value,
+    T value,
     this._decimal,
   ) {
-    _value = _formatValue(_value);
+    _value = Bignumber(value);
   }
-
-  String _formatValue(String value) => value.split('_').join('');
 
   /// Checks if the _denomination of this amount is the same as the provided one.
   bool _isSameDenomination(Denomination den) => _denomination == den;
@@ -33,9 +33,10 @@ final class Amount {
       throw ArgumentError(
           'Cannot add amounts with different denominations or different decimals');
     }
+
     return Amount(
       _denomination,
-      (BigInt.parse(_value) + BigInt.parse(other._value)).toString(),
+      (_value + other._value).toString(),
       _decimal,
     );
   }
@@ -48,7 +49,7 @@ final class Amount {
     }
     return Amount(
       _denomination,
-      (BigInt.parse(_value) - BigInt.parse(other._value)).toString(),
+      (_value - other._value).toString(),
       _decimal,
     );
   }
@@ -62,7 +63,7 @@ final class Amount {
     }
     return Amount(
       _denomination,
-      (BigInt.parse(_value) ~/ BigInt.parse(other._value)).toString(),
+      (_value / other._value).toString(),
       _decimal,
     );
   }
@@ -75,7 +76,7 @@ final class Amount {
     }
     return Amount(
       _denomination,
-      (BigInt.parse(_value) * BigInt.parse(other._value)).toString(),
+      (_value * other._value).toString(),
       _decimal,
     );
   }
@@ -83,7 +84,7 @@ final class Amount {
   Amount pow(int exponent) {
     return Amount(
       _denomination,
-      (BigInt.parse(_value).pow(exponent)).toString(),
+      (_value.pow(exponent)).toString(),
       _decimal,
     );
   }
@@ -94,7 +95,7 @@ final class Amount {
       throw ArgumentError(
           'Cannot compare amounts with different denominations or different decimals');
     }
-    return BigInt.parse(_value) > BigInt.parse(other._value);
+    return _value > other._value;
   }
 
   bool gte(Amount other) {
@@ -103,7 +104,7 @@ final class Amount {
       throw ArgumentError(
           'Cannot compare amounts with different denominations or different decimals');
     }
-    return BigInt.parse(_value) >= BigInt.parse(other._value);
+    return _value >= other._value;
   }
 
   bool lt(Amount other) {
@@ -112,7 +113,7 @@ final class Amount {
       throw ArgumentError(
           'Cannot compare amounts with different denominations or different decimals');
     }
-    return BigInt.parse(_value) < BigInt.parse(other._value);
+    return _value < other._value;
   }
 
   bool lte(Amount other) {
@@ -121,7 +122,7 @@ final class Amount {
       throw ArgumentError(
           'Cannot compare amounts with different denominations or different decimals');
     }
-    return BigInt.parse(_value) <= BigInt.parse(other._value);
+    return _value <= other._value;
   }
 
   bool equalsTo(Amount other) {
@@ -130,7 +131,7 @@ final class Amount {
       throw ArgumentError(
           'Cannot compare amounts with different denominations or different decimals');
     }
-    return BigInt.parse(_value) == BigInt.parse(other._value);
+    return _value == other._value;
   }
 
   operator +(Amount other) => plus(other);
@@ -162,67 +163,69 @@ final class Amount {
 }
 
 /// Represents a base amount in the system, typically used for native assets.
-final class BaseAmount extends Amount {
-  BaseAmount(String _value, [int? _decimal = thorDecimal])
-      : super(Denomination.base, _value, _decimal);
+final class BaseAmount<T> extends Amount {
+  BaseAmount(T value, [int? decimal = thorDecimal])
+      : super(Denomination.base, value, decimal);
 
   @override
-  BaseAmount plus(Amount other) =>
-      BaseAmount(super.plus(other)._value, _decimal);
+  BaseAmount plus(Amount other) {
+    return BaseAmount(super.plus(other)._value.toString(), _decimal);
+  }
 
   @override
   BaseAmount minus(Amount other) =>
-      BaseAmount(super.minus(other)._value, _decimal);
+      BaseAmount(super.minus(other)._value.toString(), _decimal);
 
   @override
-  BaseAmount div(Amount other) => BaseAmount(super.div(other)._value, _decimal);
+  BaseAmount div(Amount other) =>
+      BaseAmount(super.div(other)._value.toString(), _decimal);
 
   @override
-  BaseAmount mul(Amount other) => BaseAmount(super.mul(other)._value, _decimal);
+  BaseAmount mul(Amount other) =>
+      BaseAmount(super.mul(other)._value.toString(), _decimal);
 
   @override
   BaseAmount pow(int exponent) =>
-      BaseAmount(super.pow(exponent)._value, _decimal);
+      BaseAmount(super.pow(exponent)._value.toString(), _decimal);
 }
 
 // / Represents an amount of a specific asset, used for token or trade assets.
-final class AssetAmount extends Amount {
+final class AssetAmount<T> extends Amount {
   @override
-  final int _decimal;
-  AssetAmount(String _value, this._decimal)
-      : super(Denomination.asset, _value, _decimal);
+  AssetAmount(T value, [int? decimal = thorDecimal])
+      : super(Denomination.asset, value, decimal);
 
   @override
   AssetAmount plus(Amount other) =>
-      AssetAmount(super.plus(other)._value, _decimal);
+      AssetAmount(super.plus(other)._value.toString(), _decimal);
 
   @override
   AssetAmount minus(Amount other) =>
-      AssetAmount(super.minus(other)._value, _decimal);
+      AssetAmount(super.minus(other)._value.toString(), _decimal);
 
   @override
   AssetAmount div(Amount other) =>
-      AssetAmount(super.div(other)._value, _decimal);
+      AssetAmount(super.div(other)._value.toString(), _decimal);
 
   @override
   AssetAmount mul(Amount other) =>
-      AssetAmount(super.mul(other)._value, _decimal);
+      AssetAmount(super.mul(other)._value.toString(), _decimal);
 
   @override
   AssetAmount pow(int exponent) =>
-      AssetAmount(super.pow(exponent)._value, _decimal);
+      AssetAmount(super.pow(exponent)._value.toString(), _decimal);
 }
 
 /// Converts a [BaseAmount] to an [AssetAmount] based on the decimal value.
 AssetAmount baseToAsset(BaseAmount amount) {
-  final divider = BigInt.from(10).pow(amount._decimal ?? thorDecimal);
-  final assetValue = BigInt.parse(amount._value) / divider;
+  final divider = Bignumber(10).pow(amount._decimal ?? thorDecimal);
+  final assetValue = amount._value / divider;
   return AssetAmount(assetValue.toString(), amount._decimal ?? thorDecimal);
 }
 
 /// Converts an [AssetAmount] to a [BaseAmount] based on the decimal value.
 BaseAmount assetToBase(AssetAmount amount) {
-  final multiplier = BigInt.from(10).pow(amount._decimal);
-  final baseValue = BigInt.parse(amount._value) * multiplier;
+  final multiplier = Bignumber(10).pow(amount.decimal);
+  final baseValue = amount._value * multiplier;
   return BaseAmount(baseValue.toString(), amount._decimal);
 }
