@@ -1,6 +1,5 @@
 import 'package:test/test.dart';
-import 'package:xchain_utils/src/json_rpc.dart';
-import 'package:xchain_utils/src/rpc_client.dart';
+import 'package:xchain_utils/xchain_utils.dart';
 
 void main() {
   group('JsonRpc testing', () {
@@ -18,7 +17,8 @@ void main() {
       );
 
       var response = await client.execute(json);
-      print(response.result);
+      expect(response, isA<JsonRpcResponse>());
+      expect(response.result != null, isTrue);
     });
     test('Test a failing request from RpcHttpClient', () async {
       var json = JsonRpcRequest(
@@ -30,8 +30,6 @@ void main() {
         endpoint: 'https://cosmos-rpc.publicnode.com',
       );
       expect(() async => await client.execute(json), throwsA(isA<Exception>()));
-      // var response = await client.execute(json);
-      // print(response.result);
     });
   });
 }

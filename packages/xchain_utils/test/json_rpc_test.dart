@@ -1,6 +1,6 @@
 import 'package:test/test.dart';
-import 'package:xchain_utils/src/json_rpc.dart';
 import 'package:http/http.dart' as http;
+import 'package:xchain_utils/xchain_utils.dart';
 
 void main() {
   group('JsonRpc testing', () {

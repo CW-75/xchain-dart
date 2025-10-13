@@ -10,9 +10,9 @@ environment:
 # Add regular dependencies here.
 dependencies:
   xchain_utils:
-    path: ../xchain-utils
+    path: ../xchain_utils
   xchain_crypto:
-    path: ../xchain-crypto
+    path: ../xchain_crypto
   http: ^1.5.0
   # path: ^1.8.0
 

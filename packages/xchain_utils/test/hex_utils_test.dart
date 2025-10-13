@@ -1,7 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:test/test.dart';
-import 'package:xchain_utils/src/hex_utils.dart';
+import 'package:xchain_utils/xchain_utils.dart';
 
 void main() {
   group('Hex utils tests', () {
