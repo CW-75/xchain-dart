@@ -7,8 +7,12 @@ void main() {
     setUp(() {
       // Additional setup goes here.
     });
-    test('Defining a BaseAmount', () async {
-      var json = JsonRpcRequest(0, 'status', []);
+    test('Basic testing Json types and http call', () async {
+      var json = JsonRpcRequest(
+        id: '1',
+        method: 'status',
+        params: [],
+      );
       var response = await http.post(
           Uri.parse('https://cosmos-rpc.publicnode.com'),
           body: json.toString());
