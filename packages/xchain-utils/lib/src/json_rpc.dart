@@ -7,7 +7,7 @@ interface class JsonRpcRequest {
   final String method;
   final dynamic params;
 
-  JsonRpcRequest(this.id, this.method, this.params) {
+  JsonRpcRequest({this.id, required this.method, this.params}) {
     if (id is! String && id is! int) {
       throw ArgumentError('id must be a String or an int');
     }
@@ -30,8 +30,10 @@ interface class JsonRpcResponse {
   late dynamic error;
 
   /// Parses a JSON-RPC response string.
-  JsonRpcResponse(String response) {
-    var json = jsonDecode(response);
+  /// [jsonResponse] is the JSON string to parse.
+  /// Throws an [ArgumentError] if the response is invalid.
+  JsonRpcResponse(String jsonResponse) {
+    var json = jsonDecode(jsonResponse);
     jsonRpc = json['jsonrpc'] ?? '2.0';
     id = json['id'];
     if (id is! String && id is! int) {
