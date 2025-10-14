@@ -3,6 +3,6 @@
 /// More dartdocs go here.
 library;
 
-export 'src/xchain_cosmos_sdk_base.dart';
+export 'src/tendermint.dart';
 
 // TODO: Export any libraries intended for clients of this package.
