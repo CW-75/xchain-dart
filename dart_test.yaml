@@ -2,3 +2,4 @@ paths:
   - ./packages/xchain_utils
   - ./packages/xchain_client
   - ./packages/xchain_crypto
+  - ./packages/xchain_cosmos_sdk
