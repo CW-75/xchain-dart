@@ -35,7 +35,7 @@ interface class JsonRpcResponse {
   JsonRpcResponse(String jsonResponse) {
     var json = jsonDecode(jsonResponse);
     jsonRpc = json['jsonrpc'] ?? '2.0';
-    id = json['id'];
+    id = json['id'] ?? 0;
     if (id is! String && id is! int) {
       throw ArgumentError('id must be a String or an int');
     }
