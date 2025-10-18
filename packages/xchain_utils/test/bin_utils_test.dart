@@ -22,6 +22,8 @@ void main() {
       writer.int32(2500); // Max negative int32 to read
       writer.int32(1); // Max negative int32 to read
       writer.int32(-1); // Max negative int32 to read
+      writer.boolean(true);
+      writer.boolean(false);
       buffer = writer.finish();
       expect(buffer, encodedMockBytes);
     });
@@ -36,6 +38,8 @@ void main() {
       expect(reader.int32(), 2500); // Max positive int32 to read
       expect(reader.int32(), 1); // Max positive int32 to read
       expect(reader.int32(), -1); // Max negative int32 to read
+      expect(reader.boolean(), true);
+      expect(reader.boolean(), false);
     });
   });
 }

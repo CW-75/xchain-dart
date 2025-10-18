@@ -84,5 +84,7 @@ List<int> encodedMockBytes = [
   255,
   255,
   255,
-  1
+  1,
+  1,
+  0
 ];

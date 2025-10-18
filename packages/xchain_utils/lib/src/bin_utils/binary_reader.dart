@@ -53,6 +53,11 @@ final class BinaryReader implements IBinaryReader {
     return buffer.sublist(start, start + len);
   }
 
+  bool boolean() {
+    Varint64 var64 = varint64read(this);
+    return var64.lo != 0 || var64.hi != 0;
+  }
+
   String string() {
     Uint8List bytes = this.bytes();
     return utf8Read(bytes, 0, bytes.length);
