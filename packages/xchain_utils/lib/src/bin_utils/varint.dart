@@ -252,7 +252,7 @@ void writeVarint64(Varint64 val, Uint8List buf, int pos) {
   buf[pos++] = val.lo;
 }
 
-varint64read(IBinaryReader reader) {
+Varint64 varint64read(IBinaryReader reader) {
   var lowBits = 0;
   var highBits = 0;
 
@@ -261,7 +261,7 @@ varint64read(IBinaryReader reader) {
     lowBits |= (b & 0x7f) << shift;
     if ((b & 0x80) == 0) {
       reader.assertBounds();
-      return [lowBits, highBits];
+      return Varint64(highBits, lowBits);
     }
   }
 
@@ -275,7 +275,7 @@ varint64read(IBinaryReader reader) {
 
   if ((middleByte & 0x80) == 0) {
     reader.assertBounds();
-    return [lowBits, highBits];
+    return Varint64(highBits, lowBits);
   }
 
   for (var shift = 3; shift <= 31; shift += 7) {
@@ -283,7 +283,7 @@ varint64read(IBinaryReader reader) {
     highBits |= (b & 0x7f) << shift;
     if ((b & 0x80) == 0) {
       reader.assertBounds();
-      return [lowBits, highBits];
+      return Varint64(highBits, lowBits);
     }
   }
 
