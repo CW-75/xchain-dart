@@ -1,4 +1,8 @@
 name: xchain_dart
+description: A Dart library for cross-chain operations.
+version: 0.1.0
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
 environment:
   sdk: ^3.5.4
 workspace:
