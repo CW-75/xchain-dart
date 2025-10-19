@@ -1,7 +1,7 @@
 enum WireType {
   varint,
   fixed64,
-  lengthDelimited,
+  bytes,
   fixed32,
 }
 
@@ -12,7 +12,7 @@ extension WireTypeExt on WireType {
         return 0;
       case WireType.fixed64:
         return 1;
-      case WireType.lengthDelimited:
+      case WireType.bytes:
         return 2;
       case WireType.fixed32:
         return 5;

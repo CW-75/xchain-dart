@@ -1,6 +1,7 @@
 import 'dart:ffi';
 import 'dart:typed_data';
 
+import 'package:xchain_utils/src/bin_utils/wire_type.dart';
 import 'package:xchain_utils/src/bin_utils/utf8_utils.dart';
 import 'package:xchain_utils/src/bin_utils/varint.dart';
 
@@ -61,5 +62,49 @@ final class BinaryReader implements IBinaryReader {
   String string() {
     Uint8List bytes = this.bytes();
     return utf8Read(bytes, 0, bytes.length);
+  }
+
+  BinaryReader skip([int? length]) {
+    if (length != null) {
+      if (position + length > len) {
+        throw RangeError('premature EOF');
+      }
+      position += length;
+    } else {
+      do {
+        if (position >= len) {
+          throw RangeError('premature EOF');
+        }
+      } while (buffer[position++] & 128 != 0);
+    }
+
+    return this;
+  }
+
+  skipType(wireType) {
+    switch (wireType) {
+      case WireType.varint:
+        skip();
+        break;
+      case WireType.fixed64:
+        skip(8);
+        break;
+      case WireType.bytes:
+        skip(uint32());
+        break;
+      case 3:
+        while ((wireType = uint32() & 7) != 4) {
+          skipType(wireType);
+        }
+        break;
+      case WireType.fixed32:
+        skip(4);
+        break;
+
+      /* istanbul ignore next */
+      default:
+        throw ArgumentError('Unknown wire type: $wireType');
+    }
+    return this;
   }
 }
