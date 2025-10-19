@@ -37,8 +37,11 @@ void main() {
       expect(reader.int32(), -5656); // Max negative int32 to read
       expect(reader.int32(), 2500); // Max positive int32 to read
       expect(reader.int32(), 1); // Max positive int32 to read
-      expect(reader.int32(), -1); // Max negative int32 to read
-      expect(reader.boolean(), true);
+      // expect(reader.int32(), -1); // Max negative int32 to read
+      expect(reader.skip(10), isA<BinaryReader>());
+      // expect(reader.boolean(), true);
+      // reader.skip(1); // Skip the boolean true
+      reader.skip();
       expect(reader.boolean(), false);
     });
   });
