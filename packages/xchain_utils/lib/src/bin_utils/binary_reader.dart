@@ -1,7 +1,6 @@
 import 'dart:ffi';
 import 'dart:typed_data';
 
-import 'package:xchain_utils/src/bin_utils/wire_type.dart';
 import 'package:xchain_utils/src/bin_utils/utf8_utils.dart';
 import 'package:xchain_utils/src/bin_utils/varint.dart';
 
@@ -81,15 +80,15 @@ final class BinaryReader implements IBinaryReader {
     return this;
   }
 
-  skipType(wireType) {
+  BinaryReader skipType(int wireType) {
     switch (wireType) {
-      case WireType.varint:
+      case 0: // Varint
         skip();
         break;
-      case WireType.fixed64:
+      case 1: // Fixed64
         skip(8);
         break;
-      case WireType.bytes:
+      case 2: // WireType bytes
         skip(uint32());
         break;
       case 3:
@@ -97,13 +96,9 @@ final class BinaryReader implements IBinaryReader {
           skipType(wireType);
         }
         break;
-      case WireType.fixed32:
+      case 5: // Fixed32
         skip(4);
         break;
-
-      /* istanbul ignore next */
-      default:
-        throw ArgumentError('Unknown wire type: $wireType');
     }
     return this;
   }

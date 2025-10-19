@@ -41,7 +41,7 @@ void main() {
       expect(reader.skip(10), isA<BinaryReader>());
       // expect(reader.boolean(), true);
       // reader.skip(1); // Skip the boolean true
-      reader.skip();
+      reader.skipType(0);
       expect(reader.boolean(), false);
     });
   });

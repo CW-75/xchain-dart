@@ -9,5 +9,6 @@ export 'src/hex_utils.dart';
 export 'src/json_rpc.dart';
 export 'src/rpc_client.dart';
 export 'src/bin_utils/binary_writer.dart';
+export 'src/bin_utils/binary_reader.dart';
 
 // TODO: Export any libraries intended for clients of this package.
