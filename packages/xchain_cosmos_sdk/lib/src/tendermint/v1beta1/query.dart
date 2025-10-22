@@ -21,7 +21,8 @@ final class QueryAllBalanceRequest {
 
 final class QueryAllBalanceResponse {
   final Uint8List _buff;
-  QueryAllBalanceResponse({required String buff}) : _buff = base64Decode(buff) {
+  QueryAllBalanceResponse({required String value})
+    : _buff = base64Decode(value) {
     if (_buff.isEmpty) {
       throw ArgumentError('Buffer cannot be empty');
     }
