@@ -1,7 +1,13 @@
 import 'package:xchain_utils/xchain_utils.dart';
 
 typedef Balances = List<Balance>;
-typedef Balance = (
-  Asset asset,
-  BaseAmount amount,
-);
+
+final class Balance {
+  Asset asset;
+  BaseAmount amount;
+
+  Balance({
+    required this.asset,
+    required this.amount,
+  });
+}

@@ -18,7 +18,7 @@ abstract interface class _XchainClient {
   Future<Address> getAsyncAddress(int? walletIndex);
   Address setPhrase(String phrase, int walletIndex);
   Future<Balances> getBalance({
-    Address? address,
+    required Address address,
     List<Asset>? assets,
   });
   Future<TxsPage> getTransactions(TxHistoryParams params);
