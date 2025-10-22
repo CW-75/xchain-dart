@@ -1,3 +1,4 @@
+import 'package:dotenv/dotenv.dart';
 import 'package:xchain_client/xchain_client.dart';
 import 'package:xchain_cosmos_sdk/src/client.dart';
 // import 'package:xchain_cosmos_sdk/src/tendermint/client.dart';
@@ -8,10 +9,11 @@ import 'package:xchain_utils/xchain_utils.dart';
 
 final class PseudoCosmosClient extends CosmosSdkClient {
   PseudoCosmosClient({
-    required Chain chain,
-    required Network network,
-    DataProviders? dataProviders,
-  }) : super(chain: chain, network: network, dataProviders: dataProviders);
+    required super.chain,
+    required super.network,
+    super.phrase,
+    super.dataProviders,
+  });
 
   @override
   Future<TxHash> broadcastTx(String txHex) {
@@ -93,6 +95,7 @@ final class PseudoCosmosClient extends CosmosSdkClient {
 }
 
 void main() {
+  final env = DotEnv(includePlatformEnvironment: true)..load();
   group('Pseudo Cosmos SDKL client implementation test', () {
     setUp(() {
       // Additional setup goes here.
@@ -100,6 +103,7 @@ void main() {
 
     test('Create Client and get balances from rpc node', () async {
       PseudoCosmosClient client = PseudoCosmosClient(
+        phrase: env['SECRET_PHRASE'],
         chain: 'THOR',
         network: Network.mainnet,
         dataProviders: {
