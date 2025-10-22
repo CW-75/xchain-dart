@@ -3,6 +3,6 @@
 /// More dartdocs go here.
 library;
 
-export 'src/tendermint.dart';
+export 'src/client.dart';
 
 // TODO: Export any libraries intended for clients of this package.
