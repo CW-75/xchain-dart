@@ -1,0 +1,25 @@
+name: Dev Branch updater CI
+
+on:
+  push:
+    branches:
+      - master
+    
+permissions: 
+  contents: write
+
+jobs:
+  branch:
+    name: Update Dev Branch
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Update Dev Branch
+        run: |
+          git fetch
+          git checkout dev
+          git merge origin/master
+          git push
