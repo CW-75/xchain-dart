@@ -7,6 +7,63 @@ import 'dart:math' as math;
 
 import 'package:xchain_crypto/src/types/xchain_types.dart';
 
+/// Utility class for converting between different bit representations.
+///
+/// This class provides methods to compress and decompress lists of integers
+class BitListCompressor {
+  int inBits;
+  int outBits;
+
+  /// Creates a [BitListCompressor] instance with specified input and output bit sizes.
+  /// /// [inBits] is the number of bits in the input integers.
+  /// [outBits] is the number of bits in the output integers.
+  BitListCompressor(this.inBits, this.outBits);
+
+  /// Converts a list of integers from [inBits] to [outBits].
+  ///
+  /// If [pad] is true, it pads the last byte if necessary.
+  /// If [pad] is false, it checks for excess padding or non-zero padding.
+  /// Returns a [Uint8List] containing the compressed data.
+  static Uint8List convert(List<int> data, int inBits, int outBits,
+      [bool pad = false]) {
+    return BitListCompressor(inBits, outBits).compress(data, pad);
+  }
+
+  /// Compresses a list of integers from [inBits] to [outBits].
+  ///
+  /// If [pad] is true, it pads the last byte if necessary.
+  /// If [pad] is false, it checks for excess padding or non-zero padding.
+  /// Returns a [Uint8List] containing the compressed data.
+  Uint8List compress(List<int> data, [pad = false]) {
+    var value = 0;
+    var bits = 0;
+    final maxV = (1 << outBits) - 1;
+
+    final List<int> result = [];
+    for (var i = 0; i < data.length; ++i) {
+      value = (value << inBits) | data[i];
+      bits += inBits;
+      while (bits >= outBits) {
+        bits -= outBits;
+        result.add((value >> bits) & maxV);
+      }
+    }
+
+    if (pad) {
+      if (bits > 0) {
+        result.add((value << (outBits - bits)) & maxV);
+      }
+    } else {
+      if (bits >= inBits) throw ArgumentError('Excess padding');
+      if (((value << (outBits - bits)) & maxV) != 0) {
+        throw ArgumentError('Non-zero padding');
+      }
+    }
+
+    return Uint8List.fromList(result);
+  }
+}
+
 ///
 /// Function based on https://datatracker.ietf.org/doc/html/rfc2898#section-5.2
 /// Implements PBKDF2 key derivation function asynchronously.

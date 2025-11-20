@@ -73,7 +73,7 @@ class Keystore {
   }
 
   // Converts the Keystore to a JSON string
-  toJson() {
+  String toJson() {
     var enconder = JsonEncoder.withIndent('  ');
     return enconder.convert(toObject());
   }
